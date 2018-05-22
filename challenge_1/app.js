@@ -15,16 +15,14 @@ var gameOver = false;
 var rounds = 1;
 
 function reset () {
-	table = freshTable
+	table = freshTable;
+	rounds = 0;
+	gameOver = false;
 	var htmlTable = document.querySelector("#button");
 	var inner = htmlTable.querySelectorAll("td");
-	console.log('checking inner: ', inner)
 	inner.forEach(function (elem) {
-		elem.innerHTML = ''
-	})
-	rounds = 0
-	gameOver = false
-	//inner.innerHTML = '';
+		elem.innerHTML = '';
+	});
 	console.log('The board has been refreshed!', table);
 }
 
@@ -37,12 +35,14 @@ function currentTurn() {
 }
 
 function click(row, column) {
-	if (!table[row][column].player){
+	if (table[row][column].player === null){
 	  table[row][column].player = currentPlayer;
-	  console.log(table);
+	  console.log('turns changed <---------', table);
+	  event.path[0].innerHTML = currentPlayer;
 	  currentTurn();
+	  rounds += 1;
 	}else{
-		alert('That section has already been chosen')
+		alert('That section has already been chosen');
 	}
 }
 
@@ -103,22 +103,20 @@ function winnerCheckO(table) {
 }
 
 document.getElementById('reset').addEventListener("click", function(event){
-	reset()
-})
+	reset();
+});
 
 document.getElementById('button').addEventListener("click", function(event){
 	console.log('you clicked ', event);
 	if (gameOver === false && rounds < 9){
 	  var row = event.target.id[7];
 	  var column = event.target.id[8];
-	  event.path[0].innerHTML = currentPlayer;
 	  click(row, column);
 	  winnerCheckX(table);
 	  winnerCheckO(table);
-	  rounds += 1
 	console.log('round is ' + rounds);
 	} else if (rounds >8 && gameOver === false) {
-	  alert ("Tied!!")
+	  alert ("Tied!!");
 	} else if (gameOver === true){
 	  alert("Game is over");
 	}
