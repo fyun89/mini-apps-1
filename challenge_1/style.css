@@ -1,0 +1,35 @@
+td {
+	font-size: 30pt;
+	table-layout: fixed;
+	border: 1px solid black;
+	text-align: center;
+}
+
+tr {
+	table-layout: fixed;
+	width: 100px;
+	height: 100px;
+}
+
+table {
+	border-collapse: collapse;
+	table-layout:fixed;
+	width: 300px;
+	height: 300px;
+	font-size: 16;
+	position: relative;
+	top: 50%;
+	left: 31%;
+}
+
+h1 {
+	font-size: 70pt;
+	position: relative;
+	left: 21%;
+}
+
+#reset {
+	font-size: 21pt;
+	position: relative;
+	left: 43%;
+}
