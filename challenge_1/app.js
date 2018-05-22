@@ -1,11 +1,32 @@
 var table = [
-  [{player: null, score: 'a'}, {player: null, score: 'b'}, {player: null, score: 'c'}] ,
-  [{player: null, score: 'd'}, {player: null, score: 'e'}, {player: null, score: 'f'}] ,
-  [{player: null, score: 'g'}, {player: null, score: 'h'}, {player: null, score: 'i'}] 
+  [{player: null, letter: 'a'}, {player: null, letter: 'b'}, {player: null, letter: 'c'}] ,
+  [{player: null, letter: 'd'}, {player: null, letter: 'e'}, {player: null, letter: 'f'}] ,
+  [{player: null, letter: 'g'}, {player: null, letter: 'h'}, {player: null, letter: 'i'}] 
+];
+
+var freshTable = [
+  [{player: null, letter: 'a'}, {player: null, letter: 'b'}, {player: null, letter: 'c'}] ,
+  [{player: null, letter: 'd'}, {player: null, letter: 'e'}, {player: null, letter: 'f'}] ,
+  [{player: null, letter: 'g'}, {player: null, letter: 'h'}, {player: null, letter: 'i'}] 
 ];
 
 var currentPlayer = 'X';
 var gameOver = false;
+var rounds = 1;
+
+function reset () {
+	table = freshTable
+	var htmlTable = document.querySelector("#button");
+	var inner = htmlTable.querySelectorAll("td");
+	console.log('checking inner: ', inner)
+	inner.forEach(function (elem) {
+		elem.innerHTML = ''
+	})
+	rounds = 0
+	gameOver = false
+	//inner.innerHTML = '';
+	console.log('The board has been refreshed!', table);
+}
 
 function currentTurn() {
 	if (currentPlayer === 'X') {
@@ -13,7 +34,7 @@ function currentTurn() {
 	}else{
 		currentPlayer = 'X';
 	}
-};
+}
 
 function click(row, column) {
 	if (!table[row][column].player){
@@ -23,11 +44,11 @@ function click(row, column) {
 	}else{
 		alert('That section has already been chosen')
 	}
-};
+}
 
 
 function winnerCheckX(table) {
-	var score = ''; //if this reaches 3, that player wins
+	var letters = ''; //if this reaches 3, that player wins
 	var currPlayer = 'X';
 	function recursion(c) {
 		var current = c || table;
@@ -36,24 +57,26 @@ function winnerCheckX(table) {
 				if (elem.length > 1) {
 					recursion(elem);
 				} else if (elem.player === 'X') {
-					score += elem.score;
+					letters += elem.letter;
+					//rounds += 1;
 				}
 			});
 		}
 	}
 	recursion();
-	score.split('').sort((a,b)=>(a-b));
-	console.log('curr player: ' + currentPlayer + ' and curr score is: ' + score);
-	if (score === 'abc' || score === 'def' || score === 'ghi' || score === 'aei' || score === 'ceg' || score === 'adg' || score === 'beh' || score === 'cfi') {
+	letters.split('').sort((a,b)=>(a-b));
+	console.log('curr player: ' + currentPlayer + ' and curr letters is: ' + letters);
+	if ((letters.includes('a') && letters.includes('b') && letters.includes('c')) || (letters.includes('d') && letters.includes('e') && letters.includes('f')) || (letters.includes('g') && letters.includes('h') && letters.includes('i')) || (letters.includes('a') && letters.includes('e') && letters.includes('i')) || (letters.includes('c') && letters.includes('e') && letters.includes('g')) || (letters.includes('a') && letters.includes('d') && letters.includes('g')) || (letters.includes('b') && letters.includes('e') && letters.includes('h')) || letters.includes('c') && letters.includes('f') && letters.includes('i')) {
 		console.log('Player X has won!!');
-		alert('Player X' + ' has won!!!')
+		alert('Player X has won!!!');
 		gameOver = true;
 	} 
-	return score;
+	//console.log('round is ' + rounds);
+	//return letters;
 }
 
 function winnerCheckO(table) {
-	var score = ''; 
+	var letters = ''; 
 	var currPlayer = 'O';
 	function recursion(c) {
 		var current = c || table;
@@ -62,32 +85,41 @@ function winnerCheckO(table) {
 				if (elem.length > 1) {
 					recursion(elem);
 				} else if (elem.player === 'O') {
-					score += elem.score;
+					letters += elem.letter;
+					//rounds += 1;
 				}
 			});
 		}
 	}
 	recursion();
-	score.split('').sort((a,b)=>(a-b));
-	console.log('curr player: ' + currentPlayer + ' and curr score is: ' + score);
-	if (score === 'abc' || score === 'def' || score === 'ghi' || score === 'aei' || score === 'ceg' || score === 'adg' || score === 'beh' || score === 'cfi') {
+	letters.split('').sort((a,b)=>(a-b));
+	console.log('curr player: ' + currentPlayer + ' and curr letters is: ' + letters);
+	if ((letters.includes('a') && letters.includes('b') && letters.includes('c')) || (letters.includes('d') && letters.includes('e') && letters.includes('f')) || (letters.includes('g') && letters.includes('h') && letters.includes('i')) || (letters.includes('a') && letters.includes('e') && letters.includes('i')) || (letters.includes('c') && letters.includes('e') && letters.includes('g')) || (letters.includes('a') && letters.includes('d') && letters.includes('g')) || (letters.includes('b') && letters.includes('e') && letters.includes('h')) || letters.includes('c') && letters.includes('f') && letters.includes('i')) {
 		console.log('Player O has won!!');
-		alert('Player O' + ' has won!!!')
+		alert('Player O has won!!!');
 		gameOver = true;
 	} 
-	return score;
+	//return letters;
 }
 
+document.getElementById('reset').addEventListener("click", function(event){
+	reset()
+})
+
 document.getElementById('button').addEventListener("click", function(event){
-	console.log('you clicked ', event.path[0].innerHTML)
-	if (gameOver === false){
+	console.log('you clicked ', event);
+	if (gameOver === false && rounds < 9){
 	  var row = event.target.id[7];
 	  var column = event.target.id[8];
 	  event.path[0].innerHTML = currentPlayer;
 	  click(row, column);
 	  winnerCheckX(table);
 	  winnerCheckO(table);
-	} else {
+	  rounds += 1
+	console.log('round is ' + rounds);
+	} else if (rounds >8 && gameOver === false) {
+	  alert ("Tied!!")
+	} else if (gameOver === true){
 	  alert("Game is over");
 	}
 });
