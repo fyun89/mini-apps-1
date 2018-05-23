@@ -30,18 +30,15 @@ var dataToString = function(data) {
     	recursion(elem);
       });
     }
-    //console.log(stringDataArray)
   }
   recursion()
-  //console.log(stringDataArray)
   var output = stringDataArray.reduce((reduction, arr)=>{
-  	reduction = reduction + '\n';
+  	reduction = reduction + '<br>';
   	return reduction+= arr.join(',');
   })
-  var columns = 'firstName,lastName,county,city,role,sales \n'
-  var finalOutput = columns + output
-  console.log(finalOutput)
-  //return stringDataArray//console.log(dataToConvert[0].firstName)
+  var columns = 'firstName,lastName,county,city,role,sales</br>'
+  var finalOutput = columns + output;
+  return finalOutput;
 }
 
 app.post('/converter', (req,res) => {
@@ -51,7 +48,7 @@ app.post('/converter', (req,res) => {
 	}).on('end', () => {
 		body = Buffer.concat(body).toString();
 		//console.log(body)
-		dataToString(body)
+		res.send(dataToString(body))
 	})
 })
 
