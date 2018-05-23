@@ -11,7 +11,7 @@ $(document).ready(function(){
 		  url: '/converter',
 		  contentType: 'applications/JSON',
 		  data: data,
-		  success: function(data) {console.log('success')},
+		  success: function(data) {console.log(data)},
 		  error: function(err) {console.log('error')}
 		  // dataType: 'json'
 		});

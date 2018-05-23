@@ -17,24 +17,31 @@ app.get('/', (req, res) => {
 // 	res.send('hello world');
 // });
 
-var csvConverter = function(data) {
+var dataToString = function(data) {
   //console.log(JSON.parse(data.slice(0,-1)))
   var dataToConvert = [JSON.parse(data.slice(0,-1))]; //removes the semicolon at the end which caused error
-  //var columnName = [] //column names
-  var names = []; //data
+  //var columnName = [] //column stringDataArray
+  var stringDataArray = []; //data
   var recursion = function(node) { //recurse to retrieve the data
     var currNode = node || dataToConvert[0];
-    names.push(currNode.firstName);
+    stringDataArray.push([currNode.firstName, currNode.lastName, currNode.county, currNode.city, currNode.role, currNode.sales]);
     if (currNode.children){
       currNode.children.forEach(function(elem){
     	recursion(elem);
       });
     }
-    //console.log(names)
+    //console.log(stringDataArray)
   }
   recursion()
-  console.log(names)
-  //console.log(dataToConvert[0].firstName)
+  //console.log(stringDataArray)
+  var output = stringDataArray.reduce((reduction, arr)=>{
+  	reduction = reduction + '\n';
+  	return reduction+= arr.join(',');
+  })
+  var columns = 'firstName,lastName,county,city,role,sales \n'
+  var finalOutput = columns + output
+  console.log(finalOutput)
+  //return stringDataArray//console.log(dataToConvert[0].firstName)
 }
 
 app.post('/converter', (req,res) => {
@@ -43,12 +50,12 @@ app.post('/converter', (req,res) => {
 		body.push(chunk);
 	}).on('end', () => {
 		body = Buffer.concat(body).toString();
-		console.log(body)
-		csvConverter(body)
+		//console.log(body)
+		dataToString(body)
 	})
 })
 
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(3000, () => console.log('CSV generator listening on port 3000!'))
 
 
