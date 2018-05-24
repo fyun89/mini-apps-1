@@ -124,6 +124,12 @@ var F3 = (props) => (
 	</div>
 )
 
+var ConfirmationPage = (props) => (
+	<div>
+		<br></br>
+	</div>
+)
+
 
 // const loadHome = <Home />
 // const loadF1 = <F1 />

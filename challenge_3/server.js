@@ -1,5 +1,9 @@
-const express = require('express')
-const app = express()
+var express = require('express')
+var app = express()
+var mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:27017/checkout')
 
 app.use(express.static('public'))
 
